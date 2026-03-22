@@ -509,7 +509,7 @@
     <div class="lab-card">
         <div class="header">
             <h1>🌾 食物链书写实验室 · 生态法则版</h1>
-            <p>🔁 点击生物构建链 → 必须包含箭头 | 提交后自动同步到云端</p>
+            <p>🔁 点击生物构建链 → 点击箭头插入 | 提交后自动同步到云端</p>
         </div>
 
         <div class="habitat-tabs">
@@ -554,11 +554,11 @@
                 <div class="rule-box" id="ruleBox">
                     <h3>📜 书写规范</h3>
                     <ul>
-                        <li>起点必须是生产者（绿色植物）</li>
+                        <li>起点通常是生产者（绿色植物）</li>
                         <li>箭头指向捕食者（能量流动方向）</li>
                         <li>只包含生物（植物、动物）</li>
                         <li>至少需要两个生物</li>
-                        <li>必须包含箭头（→ 或 ←）</li>
+                        <li>建议包含箭头（→ 或 ←）让食物链更清晰</li>
                     </ul>
                 </div>
             </div>
@@ -598,6 +598,7 @@
             }, 3000);
         }
 
+        // 直接同步到云端，不做任何验证
         async function syncToCloud(chainStr, habitat) {
             try {
                 const loginState = await auth.getLoginState();
@@ -784,24 +785,15 @@
             updateHistoryUI();
         }
 
-        // 提交逻辑（不验证对错，直接同步）
+        // 提交逻辑：不做任何验证，直接同步
         async function submitFoodChain() {
-            const hasArrow = chainItems.some(i => typeof i === 'string');
-            if (!hasArrow) { 
-                resultMsg.innerText = '❌ 食物链必须包含箭头（→ 或 ←）'; 
-                return; 
-            }
-            const bios = chainItems.filter(i => typeof i !== 'string');
-            if (bios.length < 2) { 
-                resultMsg.innerText = '❌ 食物链至少需要两个生物'; 
-                return; 
-            }
-            if (bios[0].role !== 'producer') { 
-                resultMsg.innerText = '❌ 起点必须是生产者（绿色植物）'; 
-                return; 
+            const finalChain = chainToString();
+            
+            if (!finalChain) {
+                resultMsg.innerText = '❓ 请先构建食物链再提交';
+                return;
             }
             
-            const finalChain = chainToString();
             resultMsg.innerText = '📤 正在同步到云端...';
             
             // 同步到云端
@@ -810,9 +802,6 @@
             if (success) {
                 resultMsg.innerText = '✅ 已提交！老师可以看到你的食物链啦！';
                 addHistoryRecord(finalChain);
-                // 可选：提交后自动清空，方便下一条
-                // chainItems = [];
-                // renderStrip();
             } else {
                 resultMsg.innerText = '❌ 提交失败，请检查网络后重试';
             }
