@@ -50,7 +50,6 @@
             font-size: 0.9rem;
         }
         
-        /* 三个表格容器 */
         .habitat-section {
             margin-bottom: 30px;
         }
@@ -127,6 +126,10 @@
         }
         button:hover { 
             background: #c0392b; 
+        }
+        button:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
         }
         .empty-state { 
             text-align: center; 
@@ -241,6 +244,7 @@
         const foodChainsCollection = db.collection('foodchains');
 
         let isLoggedIn = false;
+        let isLoading = false;
 
         function formatTime(timestamp) {
             if (!timestamp) return '--';
@@ -258,7 +262,6 @@
             });
         }
 
-        // 更新指定栖息地的表格
         function updateHabitatTable(habitat, data) {
             const stats = new Map();
             data.forEach(record => {
@@ -303,13 +306,11 @@
                 const res = await foodChainsCollection.get();
                 const data = res.data || [];
                 
-                // 更新总统计
                 const totalSubmits = data.length;
                 const devices = new Set(data.map(r => r.deviceId));
                 document.getElementById('totalCount').innerText = totalSubmits;
                 document.getElementById('studentCount').innerText = devices.size;
                 
-                // 更新三个栖息地的表格
                 updateHabitatTable('forest', data);
                 updateHabitatTable('grassland', data);
                 updateHabitatTable('ocean', data);
@@ -320,17 +321,51 @@
         }
 
         async function clearData() {
+            if (isLoading) {
+                alert('正在处理中，请稍后...');
+                return;
+            }
+            
             if (!confirm('⚠️ 确定要清空所有学生提交的食物链数据吗？此操作不可恢复！')) return;
+            
+            const clearBtn = document.getElementById('clearBtn');
+            clearBtn.disabled = true;
+            clearBtn.textContent = '清空中...';
+            isLoading = true;
+            
             try {
+                // 获取所有数据
                 const res = await foodChainsCollection.get();
                 const data = res.data;
+                
+                if (data.length === 0) {
+                    alert('没有数据需要清空');
+                    clearBtn.disabled = false;
+                    clearBtn.textContent = '清空所有数据';
+                    isLoading = false;
+                    return;
+                }
+                
+                // 逐条删除
+                let deletedCount = 0;
                 for (let item of data) {
                     await foodChainsCollection.doc(item._id).remove();
+                    deletedCount++;
+                    console.log(`已删除 ${deletedCount}/${data.length}`);
                 }
-                alert('✅ 已清空所有数据');
-                updateDashboard();
+                
+                alert(`✅ 已清空 ${deletedCount} 条数据`);
+                
+                // 刷新显示
+                await updateDashboard();
+                
             } catch (err) {
+                console.error('清空失败:', err);
                 alert('清空失败：' + err.message);
+            } finally {
+                clearBtn.disabled = false;
+                clearBtn.textContent = '清空所有数据';
+                isLoading = false;
             }
         }
 
@@ -341,6 +376,7 @@
                 const loginState = await auth.getLoginState();
                 if (!loginState) {
                     await auth.signInAnonymously();
+                    console.log('匿名登录成功');
                 }
                 isLoggedIn = true;
                 document.getElementById('refreshTimer').innerHTML = '✅ 云端已连接 · 实时更新';
