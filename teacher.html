@@ -7,50 +7,56 @@
     <script src="https://static.cloudbase.net/cloudbase-js-sdk/2.17.3/cloudbase.full.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { 
-            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; 
-            margin: 0; 
-            padding: 20px; 
-            background: #f0f2f5;
-            min-height: 100vh;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
-        h1 { 
-            color: #2c3e50; 
-            border-left: 5px solid #27ae60; 
-            padding-left: 15px; 
-            margin-top: 0;
+
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+        }
+
+        /* 头部 */
+        h1 {
+            color: #2c3e50;
+            border-left: 5px solid #27ae60;
+            padding-left: 15px;
             margin-bottom: 20px;
             font-size: 1.8rem;
         }
-        .stats-card { 
-            background: white; 
-            border-radius: 12px; 
-            padding: 20px; 
-            margin-bottom: 20px; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
-            display: flex; 
-            gap: 20px; 
-            flex-wrap: wrap; 
+
+        /* 统计卡片 */
+        .stats-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
             justify-content: space-around;
         }
-        .stat-item { 
-            flex: 1; 
-            min-width: 120px; 
-            text-align: center; 
-            padding: 10px;
+        .stat-item {
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
         }
-        .stat-number { 
-            font-size: 2.5rem; 
-            font-weight: bold; 
-            color: #27ae60; 
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #27ae60;
         }
-        .stat-label { 
-            color: #7f8c8d; 
-            margin-top: 5px;
+        .stat-label {
+            color: #7f8c8d;
             font-size: 0.9rem;
+            margin-top: 5px;
         }
-        
+
+        /* 导出按钮 */
         .export-buttons {
             display: flex;
             gap: 15px;
@@ -58,28 +64,17 @@
             margin-bottom: 20px;
         }
         .export-btn {
-            background: #27ae60;
-            color: white;
             border: none;
             padding: 10px 24px;
             border-radius: 8px;
-            cursor: pointer;
             font-size: 1rem;
             font-weight: 600;
+            cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 8px;
             transition: 0.2s;
-        }
-        .export-btn:hover {
-            background: #219a52;
-            transform: scale(1.02);
-        }
-        .export-btn.pdf {
-            background: #e74c3c;
-        }
-        .export-btn.pdf:hover {
-            background: #c0392b;
+            color: white;
         }
         .export-btn.word {
             background: #2c6e9e;
@@ -87,17 +82,41 @@
         .export-btn.word:hover {
             background: #1e4f73;
         }
-        
-        .habitat-section {
-            margin-bottom: 30px;
+        .export-btn.pdf {
+            background: #e74c3c;
         }
+        .export-btn.pdf:hover {
+            background: #c0392b;
+        }
+
+        /* 三个表格横排容器 */
+        .habitats-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* 每个栖息地卡片 - 横排时每个占 1/3 */
+        .habitat-card {
+            flex: 1;
+            min-width: 280px;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
         .habitat-title {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 600;
-            padding: 12px 20px;
+            padding: 8px 16px;
             border-radius: 40px;
-            margin-bottom: 15px;
             display: inline-block;
+            margin-bottom: 15px;
+            text-align: center;
         }
         .habitat-title.forest {
             background: #2c5e2c;
@@ -111,54 +130,55 @@
             background: #2c6e9e;
             color: white;
         }
-        
-        .table-container { 
-            background: white; 
-            border-radius: 12px; 
-            padding: 20px; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
-            overflow-x: auto; 
-            margin-bottom: 20px;
+
+        .table-container {
+            overflow-x: auto;
+            flex: 1;
         }
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            font-size: 0.9rem;
-        }
-        th, td { 
-            padding: 12px 8px; 
-            text-align: left; 
-            border-bottom: 1px solid #eee; 
-        }
-        th { 
-            background: #27ae60; 
-            color: white; 
-            position: sticky; 
-            top: 0;
-            font-weight: 600;
-        }
-        .count-badge { 
-            background: #e67e22; 
-            color: white; 
-            padding: 4px 12px; 
-            border-radius: 20px; 
-            font-weight: bold; 
-            display: inline-block;
+        table {
+            width: 100%;
+            border-collapse: collapse;
             font-size: 0.85rem;
         }
-        .refresh-note { 
-            color: #7f8c8d; 
-            font-size: 0.8rem; 
-            margin-top: 15px; 
-            text-align: center; 
+        th, td {
+            padding: 10px 6px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
         }
+        th {
+            background: #f5f5f5;
+            font-weight: 600;
+            border-bottom: 2px solid #ddd;
+        }
+        .count-badge {
+            background: #e67e22;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            font-size: 0.8rem;
+        }
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            transition: 0.2s;
+        }
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+
         .footer-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             margin-top: 10px;
-            margin-bottom: 20px;
         }
         .auto-refresh {
             font-size: 0.8rem;
@@ -167,69 +187,67 @@
             padding: 4px 12px;
             border-radius: 20px;
         }
-        button { 
-            background: #e74c3c; 
-            color: white; 
-            border: none; 
-            padding: 8px 20px; 
-            border-radius: 5px; 
-            cursor: pointer; 
-            margin-top: 10px;
+        .clear-all-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
             font-size: 0.9rem;
         }
-        button:hover { 
-            background: #c0392b; 
+        .clear-all-btn:hover {
+            background: #c0392b;
         }
-        button:disabled {
-            background: #95a5a6;
-            cursor: not-allowed;
+        .refresh-note {
+            color: #7f8c8d;
+            font-size: 0.8rem;
+            margin-top: 15px;
+            text-align: center;
         }
-        .empty-state { 
-            text-align: center; 
-            padding: 40px; 
-            color: #95a5a6; 
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: #95a5a6;
         }
-        .loading { 
-            text-align: center; 
-            padding: 40px; 
-            color: #27ae60; 
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #27ae60;
         }
-        
-        /* 打印样式 - Word分页 */
-        @media print {
-            body {
-                background: white;
-                padding: 0;
-                margin: 0;
+
+        @media (max-width: 900px) {
+            .habitats-row {
+                flex-direction: column;
             }
-            .export-buttons, .footer-bar, .refresh-note, .auto-refresh, .stats-card button, .stats-card {
+            .habitat-card {
+                min-width: auto;
+            }
+            body {
+                padding: 12px;
+            }
+            h1 {
+                font-size: 1.4rem;
+            }
+            .stat-number {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* 打印样式 - 打印时隐藏按钮，保留内容 */
+        @media print {
+            .export-buttons, .footer-bar, .refresh-note, .clear-all-btn, .delete-btn {
                 display: none;
             }
-            .habitat-section {
-                page-break-after: always;
-                page-break-inside: avoid;
-                margin: 0;
-                padding: 20px;
-            }
-            .habitat-section:last-child {
-                page-break-after: auto;
-            }
-            .table-container {
+            .stats-card {
                 box-shadow: none;
                 border: 1px solid #ddd;
             }
-            h1 {
-                display: none;
+            .habitat-card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                page-break-inside: avoid;
             }
-        }
-        @media (max-width: 768px) {
-            body { padding: 12px; }
-            h1 { font-size: 1.4rem; }
-            .stat-number { font-size: 1.8rem; }
-            th, td { padding: 8px 4px; font-size: 0.8rem; }
-            .count-badge { padding: 2px 8px; }
-            .habitat-title { font-size: 1.2rem; }
-            .export-btn { padding: 6px 16px; font-size: 0.85rem; }
         }
     </style>
 </head>
@@ -237,11 +255,11 @@
     <h1>🌿 食物链实验室 · 教师数据看板</h1>
     
     <div class="export-buttons">
-        <button class="export-btn word" id="exportWordBtn">📄 导出 Word 文档（三页）</button>
-        <button class="export-btn pdf" id="exportPdfBtn">📑 导出 PDF 文件（三页）</button>
+        <button class="export-btn word" id="exportWordBtn">📄 导出 Word（三页分页）</button>
+        <button class="export-btn pdf" id="exportPdfBtn">📑 导出 PDF（三页分页）</button>
     </div>
     
-    <div class="stats-card" id="statsCard">
+    <div class="stats-card">
         <div class="stat-item">
             <div class="stat-number" id="totalCount">0</div>
             <div class="stat-label">总提交次数</div>
@@ -252,62 +270,59 @@
         </div>
     </div>
 
-    <!-- 森林区域 -->
-    <div class="habitat-section" id="forestSection">
-        <div class="habitat-title forest">🌲 森林食物链统计</div>
-        <div class="table-container">
-            <div style="overflow-x: auto;">
+    <!-- 三个表格横排 -->
+    <div class="habitats-row">
+        <!-- 森林 -->
+        <div class="habitat-card">
+            <div class="habitat-title forest">🌲 森林食物链</div>
+            <div class="table-container">
                 <table id="forest-table">
                     <thead>
-                        <tr><th>排名</th><th>食物链</th><th>提交次数</th><th>最近提交时间</th></tr>
+                        <tr><th>排名</th><th>食物链</th><th>次数</th><th>操作</th> </>
                     </thead>
                     <tbody id="forest-body">
-                        <tr><td colspan="4" class="loading">加载中...</td></tr>
+                        <tr><td colspan="4" class="loading">加载中...</td> </>
                     </tbody>
-                </table>
+                 </table>
             </div>
         </div>
-    </div>
 
-    <!-- 草原区域 -->
-    <div class="habitat-section" id="grasslandSection">
-        <div class="habitat-title grassland">🌿 草原食物链统计</div>
-        <div class="table-container">
-            <div style="overflow-x: auto;">
+        <!-- 草原 -->
+        <div class="habitat-card">
+            <div class="habitat-title grassland">🌿 草原食物链</div>
+            <div class="table-container">
                 <table id="grassland-table">
                     <thead>
-                        <tr><th>排名</th><th>食物链</th><th>提交次数</th><th>最近提交时间</th></tr>
+                        <tr><th>排名</th><th>食物链</th><th>次数</th><th>操作</th> </>
                     </thead>
                     <tbody id="grassland-body">
-                        <tr><td colspan="4" class="loading">加载中...</td></tr>
+                        <tr><td colspan="4" class="loading">加载中...</td> </>
                     </tbody>
-                </table>
+                 </table>
             </div>
         </div>
-    </div>
 
-    <!-- 海洋区域 -->
-    <div class="habitat-section" id="oceanSection">
-        <div class="habitat-title ocean">🌊 海洋食物链统计</div>
-        <div class="table-container">
-            <div style="overflow-x: auto;">
+        <!-- 海洋 -->
+        <div class="habitat-card">
+            <div class="habitat-title ocean">🌊 海洋食物链</div>
+            <div class="table-container">
                 <table id="ocean-table">
                     <thead>
-                        <tr><th>排名</th><th>食物链</th><th>提交次数</th><th>最近提交时间</th></tr>
+                        <tr><th>排名</th><th>食物链</th><th>次数</th><th>操作</th> </>
                     </thead>
                     <tbody id="ocean-body">
-                        <tr><td colspan="4" class="loading">加载中...</td></tr>
+                        <td><td colspan="4" class="loading">加载中...</td> </>
                     </tbody>
-                </table>
+                 </table>
             </div>
         </div>
     </div>
 
     <div class="footer-bar">
         <div class="auto-refresh" id="refreshTimer">🔄 实时更新中</div>
-        <button id="clearBtn">清空所有数据</button>
+        <button class="clear-all-btn" id="clearAllBtn">清空所有数据</button>
     </div>
-    <div class="refresh-note">✨ 数据每3秒自动刷新 | 点击导出按钮可生成三页独立报告（每页一个栖息地）</div>
+    <div class="refresh-note">✨ 数据每3秒自动刷新 | 点击"删除"可删除该食物链的所有记录 | 导出Word/PDF自动分三页</div>
 
     <script>
         const app = cloudbase.init({ env: 'food-chain-lab-7gs8q6n82492ec18' });
@@ -318,14 +333,10 @@
         let isLoggedIn = false;
         let isLoading = false;
 
-        function formatTime(timestamp) {
-            if (!timestamp) return '--';
-            const date = new Date(timestamp);
-            return `${date.getFullYear()}/${date.getMonth()+1}/${date.getDate()} ${date.getHours().toString().padStart(2,'0')}:${date.getMinutes().toString().padStart(2,'0')}:${date.getSeconds().toString().padStart(2,'0')}`;
-        }
-
         function escapeHtml(str) {
             if (!str) return '';
+            // 去除emoji图标，只保留文字
+            str = str.replace(/[\u{1F300}-\u{1F9FF}]/gu, '');
             return str.replace(/[&<>]/g, function(m) {
                 if (m === '&') return '&amp;';
                 if (m === '<') return '&lt;';
@@ -334,22 +345,23 @@
             });
         }
 
+        // 更新单个栖息地的表格
         function updateHabitatTable(habitat, data) {
             const stats = new Map();
             data.forEach(record => {
                 if (record.habitat !== habitat) return;
                 const chain = record.chain;
-                const ts = record.timestamp;
+                const _id = record._id;
                 if (!stats.has(chain)) {
-                    stats.set(chain, { count: 0, latestTimestamp: ts });
+                    stats.set(chain, { count: 0, ids: [] });
                 }
                 const item = stats.get(chain);
                 item.count++;
-                if (ts > item.latestTimestamp) item.latestTimestamp = ts;
+                item.ids.push(_id);
             });
 
             const sorted = Array.from(stats.entries())
-                .map(([chain, stat]) => ({ chain, count: stat.count, latest: stat.latestTimestamp }))
+                .map(([chain, stat]) => ({ chain, count: stat.count, ids: stat.ids }))
                 .sort((a, b) => b.count - a.count);
 
             const tbodyId = `${habitat}-body`;
@@ -357,7 +369,7 @@
             if (!tbody) return;
             
             if (sorted.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="empty-state">📭 暂无提交数据</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="4" class="empty-state">📭 暂无数据</td></tr>';
                 return;
             }
             
@@ -365,19 +377,38 @@
             sorted.forEach((item, index) => {
                 const row = tbody.insertRow();
                 row.insertCell(0).innerText = index + 1;
-                row.insertCell(1).innerHTML = `<strong>${escapeHtml(item.chain)}</strong>`;
+                const cleanChain = escapeHtml(item.chain);
+                row.insertCell(1).innerHTML = `<strong>${cleanChain}</strong>`;
                 row.insertCell(2).innerHTML = `<span class="count-badge">${item.count}</span>`;
-                row.insertCell(3).innerText = formatTime(item.latest);
+                
+                const deleteCell = row.insertCell(3);
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.textContent = '删除';
+                deleteBtn.onclick = () => deleteChainRecords(habitat, item.chain, item.ids);
+                deleteCell.appendChild(deleteBtn);
             });
+        }
+
+        // 删除某条食物链的所有记录
+        async function deleteChainRecords(habitat, chainName, ids) {
+            if (!confirm(`确定要删除「${chainName}」吗？共 ${ids.length} 条记录，不可恢复。`)) return;
+            try {
+                for (let id of ids) {
+                    await foodChainsCollection.doc(id).remove();
+                }
+                alert(`✅ 已删除 ${ids.length} 条记录`);
+                await updateDashboard();
+            } catch (err) {
+                alert('删除失败：' + err.message);
+            }
         }
 
         async function updateDashboard() {
             if (!isLoggedIn) return;
-            
             try {
                 const res = await foodChainsCollection.get();
                 const data = res.data || [];
-                
                 const totalSubmits = data.length;
                 const devices = new Set(data.map(r => r.deviceId));
                 document.getElementById('totalCount').innerText = totalSubmits;
@@ -386,236 +417,164 @@
                 updateHabitatTable('forest', data);
                 updateHabitatTable('grassland', data);
                 updateHabitatTable('ocean', data);
-                
             } catch (err) {
                 console.error('获取数据失败:', err);
             }
         }
 
-        async function clearData() {
+        // 清空所有数据
+        async function clearAllData() {
             if (isLoading) {
                 alert('正在处理中，请稍后...');
                 return;
             }
+            if (!confirm('⚠️ 确定要清空所有数据吗？不可恢复！')) return;
             
-            if (!confirm('⚠️ 确定要清空所有学生提交的食物链数据吗？此操作不可恢复！')) return;
-            
-            const clearBtn = document.getElementById('clearBtn');
-            clearBtn.disabled = true;
-            clearBtn.textContent = '清空中...';
+            const btn = document.getElementById('clearAllBtn');
+            btn.disabled = true;
+            btn.textContent = '清空中...';
             isLoading = true;
             
             try {
                 const res = await foodChainsCollection.get();
                 const data = res.data;
-                
-                if (data.length === 0) {
-                    alert('没有数据需要清空');
-                    clearBtn.disabled = false;
-                    clearBtn.textContent = '清空所有数据';
-                    isLoading = false;
-                    return;
-                }
-                
-                let deletedCount = 0;
                 for (let item of data) {
                     await foodChainsCollection.doc(item._id).remove();
-                    deletedCount++;
                 }
-                
-                alert(`✅ 已清空 ${deletedCount} 条数据`);
+                alert(`✅ 已清空 ${data.length} 条数据`);
                 await updateDashboard();
-                
             } catch (err) {
-                console.error('清空失败:', err);
                 alert('清空失败：' + err.message);
             } finally {
-                clearBtn.disabled = false;
-                clearBtn.textContent = '清空所有数据';
+                btn.disabled = false;
+                btn.textContent = '清空所有数据';
                 isLoading = false;
             }
         }
 
-        // 获取各栖息地的统计数据
-        function getHabitatStats() {
-            const getTableData = (tableId) => {
-                const table = document.getElementById(tableId);
-                if (!table) return [];
-                const rows = [];
-                const tbody = table.querySelector('tbody');
-                if (!tbody) return rows;
-                for (let row of tbody.rows) {
-                    if (row.cells.length >= 2 && !row.cells[0].innerText.includes('暂无')) {
-                        rows.push({
-                            rank: row.cells[0]?.innerText || '',
-                            chain: row.cells[1]?.innerText || '',
-                            count: row.cells[2]?.innerText || ''
-                        });
-                    }
+        // 获取当前表格数据（用于导出）
+        function getTableData(habitat) {
+            const table = document.getElementById(`${habitat}-table`);
+            if (!table) return [];
+            const rows = [];
+            const tbody = table.querySelector('tbody');
+            if (!tbody) return rows;
+            for (let row of tbody.rows) {
+                if (row.cells.length >= 3 && !row.cells[0].innerText.includes('暂无')) {
+                    rows.push({
+                        rank: row.cells[0]?.innerText || '',
+                        chain: row.cells[1]?.innerText || '',
+                        count: row.cells[2]?.innerText || ''
+                    });
                 }
-                return rows;
-            };
-            
-            return {
-                forest: getTableData('forest-table'),
-                grassland: getTableData('grassland-table'),
-                ocean: getTableData('ocean-table')
-            };
+            }
+            return rows;
         }
 
-        // 生成三页独立HTML（Word用分页符）
-        function generateWordHTML() {
-            const stats = getHabitatStats();
+        // 生成三页分页HTML（用于导出）
+        function generateThreePageHTML() {
+            const forestData = getTableData('forest');
+            const grasslandData = getTableData('grassland');
+            const oceanData = getTableData('ocean');
             const now = new Date();
             const dateStr = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日 ${now.getHours()}:${now.getMinutes().toString().padStart(2,'0')}`;
+            const totalCount = document.getElementById('totalCount').innerText;
+            const studentCount = document.getElementById('studentCount').innerText;
             
             const generatePage = (title, icon, color, data, pageNum) => {
                 const titleColor = color === 'green' ? '#2c5e2c' : (color === 'orange' ? '#d4a373' : '#2c6e9e');
                 return `
-                <div style="page-break-after: always; page-break-inside: avoid; font-family: 'SimSun', '宋体', Arial, sans-serif; padding: 20px;">
-                    <div style="text-align: center; margin-bottom: 40px;">
-                        <div style="font-size: 32px; margin-bottom: 10px;">${icon}</div>
-                        <h1 style="color: ${titleColor}; font-size: 28px; margin-bottom: 15px;">${title}食物链统计</h1>
-                        <div style="color: #666; font-size: 14px;">生成时间：${dateStr}</div>
-                        <div style="color: #999; font-size: 12px; margin-top: 5px;">第 ${pageNum} 页</div>
+                <div style="page-break-after: always; page-break-inside: avoid; font-family: 'SimSun', '宋体', Arial, sans-serif; padding: 20mm;">
+                    <div style="text-align: center; margin-bottom: 20mm;">
+                        <div style="font-size: 48px;">${icon}</div>
+                        <h1 style="color: ${titleColor}; font-size: 28px;">${title}食物链统计</h1>
+                        <div style="color: #666; margin-top: 8mm;">生成时间：${dateStr}</div>
+                        <div style="color: #999;">第 ${pageNum} 页</div>
                     </div>
-                    
-                    <div style="margin-top: 30px;">
-                        <div style="background: ${titleColor}; color: white; padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; font-size: 18px;">
-                            📊 食物链排行榜（按提交次数排序）
+                    <div style="margin-top: 10mm;">
+                        <div style="background: ${titleColor}; color: white; padding: 8mm; text-align: center; font-size: 18px; border-radius: 8px;">
+                            📊 食物链排行榜（按次数排序）
                         </div>
                         ${data.length > 0 ? `
-                        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                        <table style="width: 100%; border-collapse: collapse; margin-top: 8mm;">
                             <thead>
                                 <tr style="background: ${titleColor}; color: white;">
-                                    <th style="padding: 12px; border: 1px solid #ddd; text-align: center; width: 15%;">排名</th>
-                                    <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">食物链</th>
-                                    <th style="padding: 12px; border: 1px solid #ddd; text-align: center; width: 25%;">提交次数</th>
-                                </tr>
+                                    <th style="padding: 6mm; border: 1px solid #ddd;">排名</th>
+                                    <th style="padding: 6mm; border: 1px solid #ddd;">食物链</th>
+                                    <th style="padding: 6mm; border: 1px solid #ddd;">提交次数</th>
+                                 </tr>
                             </thead>
                             <tbody>
                                 ${data.map(item => `
                                 <tr>
-                                    <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">${item.rank}</td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">${escapeHtml(item.chain.replace(/<[^>]*>/g, ''))}</td>
-                                    <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
-                                        <span style="background: #e67e22; color: white; padding: 4px 12px; border-radius: 20px;">${item.count}</span>
+                                    <td style="padding: 5mm; border: 1px solid #ddd; text-align: center;">${item.rank}</td>
+                                    <td style="padding: 5mm; border: 1px solid #ddd;">${escapeHtml(item.chain)}</td>
+                                    <td style="padding: 5mm; border: 1px solid #ddd; text-align: center;">
+                                        <span style="background: #e67e22; color: white; padding: 2mm 6mm; border-radius: 20px;">${item.count}</span>
                                     </td>
                                 </tr>
                                 `).join('')}
                             </tbody>
                         </table>
-                        ` : `
-                        <div style="text-align: center; padding: 60px; color: #999; border: 1px dashed #ccc; border-radius: 8px; font-size: 16px;">
-                            📭 暂无提交数据
-                        </div>
-                        `}
+                        ` : '<p style="text-align:center; color:#999; margin-top:15mm;">暂无提交数据</p>'}
                     </div>
-                    
-                    <div style="margin-top: 50px; text-align: center; color: #999; font-size: 12px; border-top: 1px solid #eee; padding-top: 20px;">
+                    <div style="margin-top: 15mm; text-align: center; color: #999; border-top: 1px solid #eee; padding-top: 8mm;">
                         食物链实验室 · 课堂统计报告
                     </div>
-                </div>
-                `;
+                </div>`;
             };
             
             return `<!DOCTYPE html>
             <html>
-            <head>
-                <meta charset="UTF-8">
-                <title>食物链统计报告</title>
-                <style>
-                    * { margin: 0; padding: 0; box-sizing: border-box; }
-                    body { font-family: 'SimSun', '宋体', Arial, sans-serif; }
-                    @page {
-                        size: A4;
-                        margin: 2cm;
-                    }
-                    table {
-                        width: 100%;
-                        border-collapse: collapse;
-                    }
-                    th, td {
-                        border: 1px solid #ddd;
-                    }
-                </style>
+            <head><meta charset="UTF-8"><title>食物链统计报告</title>
+            <style>body{margin:0;} table{width:100%;} th,td{border:1px solid #ddd;}</style>
             </head>
             <body>
-                ${generatePage('森林', '🌲', 'green', stats.forest, 1)}
-                ${generatePage('草原', '🌿', 'orange', stats.grassland, 2)}
-                ${generatePage('海洋', '🌊', 'blue', stats.ocean, 3)}
+                ${generatePage('森林', '🌲', 'green', forestData, 1)}
+                ${generatePage('草原', '🌿', 'orange', grasslandData, 2)}
+                ${generatePage('海洋', '🌊', 'blue', oceanData, 3)}
             </body>
             </html>`;
         }
 
-        // 导出 Word
         function exportToWord() {
-            const exportHTML = generateWordHTML();
-            const blob = new Blob([exportHTML], { type: 'application/msword' });
+            const blob = new Blob([generateThreePageHTML()], { type: 'application/msword' });
             const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            const now = new Date();
-            const filename = `食物链统计_${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()}.doc`;
-            link.href = url;
-            link.download = filename;
-            document.body.appendChild(link);
+            link.href = URL.createObjectURL(blob);
+            link.download = `食物链统计_${new Date().toISOString().slice(0,10)}.doc`;
             link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
+            URL.revokeObjectURL(link.href);
         }
 
-        // 导出 PDF
         async function exportToPDF() {
-            const exportHTML = generateWordHTML();
-            
-            const tempDiv = document.createElement('div');
-            tempDiv.id = 'tempExportDiv';
-            tempDiv.style.position = 'absolute';
-            tempDiv.style.left = '-9999px';
-            tempDiv.style.top = '-9999px';
-            tempDiv.style.width = '210mm';
-            tempDiv.style.background = 'white';
-            tempDiv.innerHTML = exportHTML;
-            document.body.appendChild(tempDiv);
-            
+            const div = document.createElement('div');
+            div.style.position = 'absolute';
+            div.style.left = '-9999px';
+            div.style.width = '210mm';
+            div.innerHTML = generateThreePageHTML();
+            document.body.appendChild(div);
             try {
-                const opt = {
-                    margin: [0.5, 0.5, 0.5, 0.5],
-                    filename: `食物链统计_${new Date().toLocaleDateString()}.pdf`,
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2, letterRendering: true },
-                    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-                };
-                await html2pdf().set(opt).from(tempDiv).save();
-            } catch (err) {
-                console.error('PDF导出失败:', err);
-                alert('PDF导出失败，请重试');
+                await html2pdf().set({ margin: 0, filename: `食物链统计_${new Date().toISOString().slice(0,10)}.pdf` }).from(div).save();
             } finally {
-                document.body.removeChild(tempDiv);
+                document.body.removeChild(div);
             }
         }
 
-        document.getElementById('clearBtn').addEventListener('click', clearData);
         document.getElementById('exportWordBtn').addEventListener('click', exportToWord);
         document.getElementById('exportPdfBtn').addEventListener('click', exportToPDF);
+        document.getElementById('clearAllBtn').addEventListener('click', clearAllData);
 
         async function init() {
             try {
-                const loginState = await auth.getLoginState();
-                if (!loginState) {
-                    await auth.signInAnonymously();
-                    console.log('匿名登录成功');
-                }
+                await auth.signInAnonymously();
                 isLoggedIn = true;
-                document.getElementById('refreshTimer').innerHTML = '✅ 云端已连接 · 实时更新';
+                document.getElementById('refreshTimer').innerHTML = '✅ 已连接';
                 await updateDashboard();
                 setInterval(updateDashboard, 3000);
             } catch (err) {
-                console.error('初始化失败:', err);
-                document.getElementById('refreshTimer').innerHTML = '⚠️ 连接失败，请刷新';
+                document.getElementById('refreshTimer').innerHTML = '⚠️ 连接失败';
             }
         }
-
         init();
     </script>
 </body>
