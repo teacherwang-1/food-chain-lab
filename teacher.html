@@ -195,19 +195,14 @@
             color: #27ae60; 
         }
         
-        /* 导出样式（用于打印/PDF - 三页独立） */
+        /* 打印样式 - Word分页 */
         @media print {
             body {
                 background: white;
                 padding: 0;
                 margin: 0;
             }
-            .export-buttons, .footer-bar, .refresh-note, .auto-refresh, .stats-card button {
-                display: none;
-            }
-            .stats-card {
-                box-shadow: none;
-                border: 1px solid #ddd;
+            .export-buttons, .footer-bar, .refresh-note, .auto-refresh, .stats-card button, .stats-card {
                 display: none;
             }
             .habitat-section {
@@ -441,47 +436,52 @@
             }
         }
 
-        // 生成三页独立报告（每页一个栖息地）
-        function generateThreePageHTML() {
-            const now = new Date();
-            const dateStr = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日 ${now.getHours()}:${now.getMinutes().toString().padStart(2,'0')}`;
-            
-            // 获取各栖息地的数据
-            const getHabitatData = (habitat) => {
-                const tbodyId = `${habitat}-body`;
-                const tbody = document.getElementById(tbodyId);
-                if (!tbody) return [];
+        // 获取各栖息地的统计数据
+        function getHabitatStats() {
+            const getTableData = (tableId) => {
+                const table = document.getElementById(tableId);
+                if (!table) return [];
                 const rows = [];
+                const tbody = table.querySelector('tbody');
+                if (!tbody) return rows;
                 for (let row of tbody.rows) {
-                    if (row.cells.length >= 3 && !row.cells[0].innerText.includes('暂无')) {
+                    if (row.cells.length >= 2 && !row.cells[0].innerText.includes('暂无')) {
                         rows.push({
                             rank: row.cells[0]?.innerText || '',
                             chain: row.cells[1]?.innerText || '',
-                            count: row.cells[2]?.innerText || '',
-                            time: row.cells[3]?.innerText || ''
+                            count: row.cells[2]?.innerText || ''
                         });
                     }
                 }
                 return rows;
             };
             
-            const forestData = getHabitatData('forest');
-            const grasslandData = getHabitatData('grassland');
-            const oceanData = getHabitatData('ocean');
+            return {
+                forest: getTableData('forest-table'),
+                grassland: getTableData('grassland-table'),
+                ocean: getTableData('ocean-table')
+            };
+        }
+
+        // 生成三页独立HTML（Word用分页符）
+        function generateWordHTML() {
+            const stats = getHabitatStats();
+            const now = new Date();
+            const dateStr = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日 ${now.getHours()}:${now.getMinutes().toString().padStart(2,'0')}`;
             
-            // 生成单个栖息地的页面
-            const generateHabitatPage = (title, icon, color, data, pageNum) => {
+            const generatePage = (title, icon, color, data, pageNum) => {
                 const titleColor = color === 'green' ? '#2c5e2c' : (color === 'orange' ? '#d4a373' : '#2c6e9e');
                 return `
-                <div style="page-break-after: always; page-break-inside: avoid; padding: 20px; font-family: 'SimSun', '宋体', Arial, sans-serif;">
-                    <div style="text-align: center; margin-bottom: 30px;">
-                        <h1 style="color: ${titleColor}; font-size: 28px; margin-bottom: 10px;">${icon} ${title}食物链统计</h1>
+                <div style="page-break-after: always; page-break-inside: avoid; font-family: 'SimSun', '宋体', Arial, sans-serif; padding: 20px;">
+                    <div style="text-align: center; margin-bottom: 40px;">
+                        <div style="font-size: 32px; margin-bottom: 10px;">${icon}</div>
+                        <h1 style="color: ${titleColor}; font-size: 28px; margin-bottom: 15px;">${title}食物链统计</h1>
                         <div style="color: #666; font-size: 14px;">生成时间：${dateStr}</div>
                         <div style="color: #999; font-size: 12px; margin-top: 5px;">第 ${pageNum} 页</div>
                     </div>
                     
-                    <div style="margin: 30px 0;">
-                        <div style="background: ${titleColor}; color: white; padding: 10px 20px; border-radius: 8px; margin-bottom: 15px; font-weight: bold;">
+                    <div style="margin-top: 30px;">
+                        <div style="background: ${titleColor}; color: white; padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; font-size: 18px;">
                             📊 食物链排行榜（按提交次数排序）
                         </div>
                         ${data.length > 0 ? `
@@ -490,7 +490,7 @@
                                 <tr style="background: ${titleColor}; color: white;">
                                     <th style="padding: 12px; border: 1px solid #ddd; text-align: center; width: 15%;">排名</th>
                                     <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">食物链</th>
-                                    <th style="padding: 12px; border: 1px solid #ddd; text-align: center; width: 20%;">提交次数</th>
+                                    <th style="padding: 12px; border: 1px solid #ddd; text-align: center; width: 25%;">提交次数</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -506,13 +506,13 @@
                             </tbody>
                         </table>
                         ` : `
-                        <div style="text-align: center; padding: 50px; color: #999; border: 1px dashed #ccc; border-radius: 8px;">
+                        <div style="text-align: center; padding: 60px; color: #999; border: 1px dashed #ccc; border-radius: 8px; font-size: 16px;">
                             📭 暂无提交数据
                         </div>
                         `}
                     </div>
                     
-                    <div style="position: fixed; bottom: 20px; left: 0; right: 0; text-align: center; color: #999; font-size: 12px;">
+                    <div style="margin-top: 50px; text-align: center; color: #999; font-size: 12px; border-top: 1px solid #eee; padding-top: 20px;">
                         食物链实验室 · 课堂统计报告
                     </div>
                 </div>
@@ -541,16 +541,16 @@
                 </style>
             </head>
             <body>
-                ${generateHabitatPage('森林', '🌲', 'green', forestData, 1)}
-                ${generateHabitatPage('草原', '🌿', 'orange', grasslandData, 2)}
-                ${generateHabitatPage('海洋', '🌊', 'blue', oceanData, 3)}
+                ${generatePage('森林', '🌲', 'green', stats.forest, 1)}
+                ${generatePage('草原', '🌿', 'orange', stats.grassland, 2)}
+                ${generatePage('海洋', '🌊', 'blue', stats.ocean, 3)}
             </body>
             </html>`;
         }
 
         // 导出 Word
         function exportToWord() {
-            const exportHTML = generateThreePageHTML();
+            const exportHTML = generateWordHTML();
             const blob = new Blob([exportHTML], { type: 'application/msword' });
             const link = document.createElement('a');
             const url = URL.createObjectURL(blob);
@@ -566,7 +566,7 @@
 
         // 导出 PDF
         async function exportToPDF() {
-            const exportHTML = generateThreePageHTML();
+            const exportHTML = generateWordHTML();
             
             const tempDiv = document.createElement('div');
             tempDiv.id = 'tempExportDiv';
