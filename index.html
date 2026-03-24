@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>🌍 食物链实验室 · 生态法则版</title>
+    <title>🌾 食物链实验室 · 草原版</title>
     <style>
         * {
             box-sizing: border-box;
@@ -31,16 +31,13 @@
             padding: 24px 20px 30px 20px;
             border: 2px solid #e3d6b5;
         }
-
         .header {
             text-align: center;
             margin-bottom: 16px;
-            position: relative;
         }
         .header h1 {
             font-size: 2.2rem;
             font-weight: 700;
-            letter-spacing: 1px;
             background: linear-gradient(135deg, #1f4f2b, #3d6b42);
             -webkit-background-clip: text;
             background-clip: text;
@@ -48,44 +45,31 @@
             text-shadow: 2px 2px 0 #e9dbbc;
         }
         .header p {
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: #4a5b3a;
             background: #e7dbb6;
             display: inline-block;
-            padding: 6px 24px;
+            padding: 4px 20px;
             border-radius: 50px;
-            box-shadow: inset 0 2px 5px #b8a77d;
-            font-weight: 500;
         }
 
+        /* 栖息地标签 - 只显示草原且高亮 */
         .habitat-tabs {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin: 25px 0 15px 0;
-            flex-wrap: wrap;
+            margin: 20px 0 15px;
         }
         .habitat-btn {
-            background: #cfc29b;
-            border: 3px solid #9b8f67;
+            background: #f5e7be;
+            border: 3px solid #7f8c4a;
             font-size: 1.7rem;
             font-weight: 600;
             padding: 12px 32px;
             border-radius: 60px;
-            box-shadow: 0 8px 0 #6b5e3e, 0 10px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 0 #6b5e3e;
             color: #2d3e1f;
-            letter-spacing: 1px;
-            transition: all 0.08s linear;
-            cursor: pointer;
-            flex: 0 1 auto;
-            min-width: 150px;
             text-align: center;
-        }
-        .habitat-btn.active {
-            transform: translateY(5px);
-            box-shadow: 0 3px 0 #5f5336, 0 8px 12px rgba(0,0,0,0.2);
-            background: #f5e7be;
-            border-color: #7f8c4a;
+            min-width: 150px;
         }
 
         .library-title {
@@ -93,256 +77,149 @@
             font-weight: 600;
             margin: 15px 0 8px 15px;
             color: #2b5a1e;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .library-title span {
-            background: #576b3b;
-            color: #f9f2d2;
-            padding: 5px 20px;
-            border-radius: 40px;
-            font-size: 1.1rem;
         }
         .bio-grid {
             background: #dbd0ac;
             padding: 20px 16px;
             border-radius: 60px 60px 30px 30px;
             border: 3px solid #b4a177;
-            box-shadow: inset 0 0 0 2px #f2e9ca, 0 10px 10px rgba(0,0,0,0.1);
             display: flex;
             flex-wrap: wrap;
-            gap: 14px;
+            gap: 12px;
             justify-content: center;
-            min-height: 160px;
             margin-bottom: 20px;
         }
-        
         .bio-item {
-            width: 100px;
-            padding: 12px 0 8px 0;
+            width: 90px;
+            padding: 10px 0 6px;
             border-radius: 35px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 0 #a39367, 0 6px 12px rgba(0,0,0,0.2);
+            box-shadow: 0 6px 0 #a39367;
             border: 2px solid #887e5c;
             font-weight: 600;
-            transition: 0.1s ease;
             cursor: pointer;
             text-align: center;
-            font-size: 1rem;
-            line-height: 1.3;
+            font-size: 0.9rem;
         }
-        .bio-item:active {
-            transform: scale(0.96);
-            box-shadow: 0 3px 0 #7f6f47;
-        }
-        .bio-item span {
-            font-size: 2.6rem;
-            display: block;
-            margin-bottom: 4px;
-        }
-        
-        .bio-item[data-role="producer"] {
-            background: #c8e6c9;
-            color: #1e4a1e;
-        }
-        .bio-item[data-role="consumer1"] {
-            background: #fff9c4;
-            color: #7d5d23;
-        }
-        .bio-item[data-role="consumer2"] {
-            background: #ffd8b0;
-            color: #8b4513;
-        }
-        .bio-item[data-role="consumer3"] {
-            background: #ffb6b6;
-            color: #8b1a1a;
-        }
-        .bio-item.arrow-item {
-            background: #ffe5a3 !important;
-            border-color: #b8860b;
-            box-shadow: 0 8px 0 #b57c1a;
-            color: #7a5c00;
-        }
-        .bio-item.arrow-item span {
-            font-size: 2.8rem;
-        }
+        .bio-item:active { transform: scale(0.96); }
+        .bio-item span { font-size: 2.2rem; display: block; margin-bottom: 4px; }
+        .bio-item[data-role="producer"] { background: #c8e6c9; color: #1e4a1e; }
+        .bio-item[data-role="consumer1"] { background: #fff9c4; color: #7d5d23; }
+        .bio-item[data-role="consumer2"] { background: #ffd8b0; color: #8b4513; }
+        .bio-item[data-role="consumer3"] { background: #ffb6b6; color: #8b1a1a; }
+        .bio-item.arrow-item { background: #ffe5a3 !important; border-color: #b8860b; }
 
         .main-work-area {
             display: flex;
-            flex-direction: row;
             flex-wrap: wrap;
             gap: 20px;
-            margin: 15px 0 10px;
+            margin: 15px 0;
         }
-
         .build-area {
             flex: 1.2;
-            min-width: 300px;
+            min-width: 280px;
             background: #d6cdad;
-            border-radius: 50px 50px 30px 30px;
-            border: 4px solid #9f936d;
+            border-radius: 40px;
             padding: 20px;
-            box-shadow: inset 0 0 0 3px #efe3bf, 0 10px 15px rgba(0,0,0,0.2);
         }
         .build-label {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 600;
             color: #23502b;
-            margin-bottom: 15px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
+            margin-bottom: 15px;
         }
         .build-label button {
             background: #b6aa7d;
             border: none;
-            font-size: 1.3rem;
-            padding: 8px 22px;
+            padding: 6px 20px;
             border-radius: 40px;
-            color: white;
             font-weight: 600;
-            box-shadow: 0 5px 0 #5f543a;
             cursor: pointer;
-            border: 1px solid #e6dbaa;
         }
-        .build-label button:active {
-            transform: translateY(4px);
-            box-shadow: 0 1px 0 #5f543a;
-        }
-
         .foodchain-strip {
             background: #b8ad81;
-            padding: 18px 20px;
-            border-radius: 80px;
-            border: 3px solid #6b7d44;
+            padding: 15px;
+            border-radius: 50px;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            justify-content: flex-start;
-            gap: 10px 15px;
-            min-height: 100px;
-            margin-bottom: 20px;
-            box-shadow: inset 0 2px 8px #7f8c5e;
+            gap: 8px;
+            min-height: 80px;
+            margin-bottom: 15px;
         }
         .placed-bio {
-            border-radius: 50px;
-            padding: 8px 18px 8px 12px;
+            border-radius: 40px;
+            padding: 5px 15px;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 5px 0 #a18f5f, 0 4px 10px rgba(0,0,0,0.3);
-            border: 2px solid #7d6d3a;
-            font-size: 1.4rem;
-            font-weight: 600;
+            gap: 6px;
+            background: #f7e9bc;
+            box-shadow: 0 4px 0 #a18f5f;
             cursor: pointer;
-            transition: 0.1s;
         }
-        .placed-bio[data-role="producer"] {
-            background: #c8e6c9;
-            color: #1e4a1e;
-        }
-        .placed-bio[data-role="consumer1"] {
-            background: #fff9c4;
-            color: #7d5d23;
-        }
-        .placed-bio[data-role="consumer2"] {
-            background: #ffd8b0;
-            color: #8b4513;
-        }
-        .placed-bio[data-role="consumer3"] {
-            background: #ffb6b6;
-            color: #8b1a1a;
-        }
-        .placed-bio span {
-            font-size: 2rem;
-        }
-        .placed-bio:active {
-            transform: translateY(3px);
-            box-shadow: 0 2px 0 #7d6d3a;
-        }
+        .placed-bio span { font-size: 1.5rem; }
         .arrow-inline {
-            font-size: 2rem;
+            font-size: 1.6rem;
             font-weight: 800;
             color: #745d31;
-            text-shadow: 2px 2px 0 #e5cf91;
-            margin: 0 2px;
             cursor: pointer;
             background: #ecdcaa;
-            padding: 0 6px;
+            padding: 0 8px;
             border-radius: 30px;
-            transition: 0.05s linear;
         }
-        .arrow-inline:active {
-            transform: scale(0.9);
+        .submit-btn {
+            background: #4f7a3f;
+            width: 100%;
+            padding: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 10px 0;
         }
-
+        .result-feedback {
+            background: #322f21;
+            color: #f9f1c0;
+            border-radius: 40px;
+            padding: 10px;
+            text-align: center;
+        }
         .history-panel {
             flex: 0.9;
-            min-width: 280px;
+            min-width: 260px;
             background: #f1e8ca;
             border-radius: 40px;
-            border: 3px solid #b4a56b;
-            padding: 20px 18px;
-            box-shadow: inset 0 0 0 2px #fffbee, 0 10px 12px rgba(0,0,0,0.15);
-            display: flex;
-            flex-direction: column;
-            max-height: 650px;
+            padding: 15px;
         }
         .history-title {
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            color: #2c4b1c;
-            margin: 0 0 15px 0;
             text-align: center;
-            border-bottom: 3px solid #9f9b6b;
-            padding-bottom: 10px;
+            border-bottom: 2px solid #9f9b6b;
+            padding-bottom: 8px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-        }
-        .cloud-status {
-            font-size: 0.8rem;
-            background: #4f7a3f;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-        }
-        .history-list-container {
-            flex: 1;
-            background: #dacfa8;
-            border-radius: 30px;
-            padding: 15px 12px;
-            border: 2px solid #8f865d;
-            box-shadow: inset 0 0 0 1px #f7efc6;
-            overflow-y: auto;
-            max-height: 520px;
         }
         .history-list {
             list-style: none;
-            font-size: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 10px;
         }
         .history-list li {
             background: #f7e9bc;
-            margin: 10px 0;
-            padding: 10px 14px;
-            border-radius: 35px;
-            border: 1px solid #ab954b;
-            font-weight: 500;
-            word-break: break-word;
-            box-shadow: 0 3px 3px rgba(0,0,0,0.1);
+            margin: 8px 0;
+            padding: 8px 12px;
+            border-radius: 30px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            gap: 8px;
-        }
-        .history-chain {
-            flex: 1;
-            font-size: 1rem;
+            word-break: break-word;
         }
         .delete-record {
             background: none;
@@ -350,482 +227,218 @@
             font-size: 1.2rem;
             cursor: pointer;
             color: #8b5a2b;
-            padding: 0 5px;
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: rgba(255,255,255,0.5);
         }
-        .delete-record:active {
-            background-color: #ffb3b3;
-            transform: scale(1.1);
-        }
-
-        .action-area {
-            margin-top: 15px;
-        }
-        .submit-btn {
-            background: #4f7a3f;
-            border: none;
-            width: 100%;
-            padding: 15px 0;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: white;
-            border-radius: 60px;
-            box-shadow: 0 8px 0 #235021, 0 8px 15px black;
-            cursor: pointer;
-            margin: 5px 0 15px;
-            transition: 0.06s linear;
-            letter-spacing: 2px;
-        }
-        .submit-btn:active {
-            transform: translateY(5px);
-            box-shadow: 0 3px 0 #1b3e1b, 0 8px 15px black;
-        }
-        .result-feedback {
-            background: #322f21;
-            color: #f9f1c0;
-            border-radius: 40px;
-            padding: 12px;
-            font-size: 1.3rem;
-            text-align: center;
-            font-weight: 600;
-            border: 2px solid #dab47c;
-            margin: 10px 0 5px;
-        }
-        .cloud-submit-status {
-            background: #2c5e2c;
-            padding: 8px;
-            border-radius: 30px;
-            text-align: center;
-            font-size: 0.9rem;
-            margin-top: 8px;
-        }
-
-        .bottom-area {
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .rule-toggle-area {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
-        
-        .toggle-rule-btn {
-            background: #7c6d48;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            padding: 12px 30px;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 6px 0 #4f3f27;
-            transition: 0.05s linear;
-            border: 2px solid #b49d63;
-            width: fit-content;
-            min-width: 250px;
-        }
-        .toggle-rule-btn:active {
-            transform: translateY(4px);
-            box-shadow: 0 2px 0 #4f3f27;
-        }
-        .rule-box {
-            background: #cac09c;
-            border-radius: 30px;
-            padding: 0px 25px;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease, padding 0.2s ease;
-            margin-top: 10px;
-            color: #1f3d1f;
-            box-shadow: inset 0 2px 5px #928b66;
-            visibility: hidden;
-            opacity: 0;
-            width: 100%;
-            max-width: 600px;
-        }
-        .rule-box.show {
-            max-height: 380px;
-            padding: 20px 25px;
-            visibility: visible;
-            opacity: 1;
-        }
-        .rule-box h3 {
-            font-size: 1.8rem;
-            border-bottom: 3px solid #5b7542;
-            margin-bottom: 15px;
-            color: #1f471f;
-        }
-        .rule-box ul {
-            list-style-type: none;
-        }
-        .rule-box li {
-            font-size: 1.2rem;
-            margin: 12px 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 500;
-        }
-        .rule-box li::before {
-            content: "🌱";
-            font-size: 1.4rem;
-        }
-
-        .clear-all {
-            background: #c0a16b;
-            border: none;
-            font-size: 1.3rem;
-            padding: 8px 20px;
-            border-radius: 40px;
-            font-weight: 700;
-            box-shadow: 0 5px 0 #7b623e;
-            cursor: pointer;
-            color: #2a341c;
-        }
+        .cloud-status { font-size: 0.7rem; background: #4f7a3f; color: white; padding: 2px 10px; border-radius: 20px; }
         @media (max-width: 750px) {
-            .bio-item { width: 80px; font-size: 0.8rem; }
-            .bio-item span { font-size: 2rem; }
-            .placed-bio { font-size: 1rem; padding: 5px 12px; }
-            .placed-bio span { font-size: 1.5rem; }
-            .habitat-btn { font-size: 1.3rem; padding: 8px 20px; min-width: 110px; }
-            .history-chain { font-size: 0.85rem; }
+            .bio-item { width: 75px; font-size: 0.75rem; }
+            .bio-item span { font-size: 1.8rem; }
         }
     </style>
     <script src="https://static.cloudbase.net/cloudbase-js-sdk/2.17.3/cloudbase.full.js"></script>
 </head>
 <body>
-    <div class="lab-card">
-        <div class="header">
-            <h1>🌾 食物链书写实验室 · 生态法则版</h1>
-            <p>🔁 点击生物构建链 → 点击箭头插入 | 提交后自动同步到云端</p>
-        </div>
-
-        <div class="habitat-tabs">
-            <div class="habitat-btn active" data-habitat="forest">🌲 森林</div>
-            <div class="habitat-btn" data-habitat="grassland">🌿 草原</div>
-            <div class="habitat-btn" data-habitat="ocean">🌊 海洋</div>
-        </div>
-
-        <div class="library-title">
-            📦 生物素材库 <span id="current-habitat-label">森林</span>
-        </div>
-        <div class="bio-grid" id="bio-grid"></div>
-
-        <div class="main-work-area">
-            <div class="build-area">
-                <div class="build-label">
-                    🧪 我的食物链
-                    <button id="clearBtn" class="clear-all">🧹 清空</button>
-                </div>
-                <div class="foodchain-strip" id="foodchain-strip"></div>
-                <div class="action-area">
-                    <button class="submit-btn" id="submitBtn">📤 提交同步到云端</button>
-                    <div class="result-feedback" id="resultMessage">✨ 构建食物链后点击提交</div>
-                    <div class="cloud-submit-status" id="cloudStatus"></div>
-                </div>
-            </div>
-
-            <div class="history-panel">
-                <div class="history-title">
-                    📋 我的提交记录
-                    <span class="cloud-status" id="cloudIndicator">☁️ 待同步</span>
-                </div>
-                <div class="history-list-container">
-                    <ul class="history-list" id="historyList"></ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="bottom-area">
-            <div class="rule-toggle-area">
-                <button class="toggle-rule-btn" id="toggleRuleBtn">📋 显示书写规范</button>
-                <div class="rule-box" id="ruleBox">
-                    <h3>📜 书写规范</h3>
-                    <ul>
-                        <li>起点通常是生产者（绿色植物）</li>
-                        <li>箭头指向捕食者（能量流动方向）</li>
-                        <li>只包含生物（植物、动物）</li>
-                        <li>至少需要两个生物</li>
-                        <li>建议包含箭头（→ 或 ←）让食物链更清晰</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+<div class="lab-card">
+    <div class="header">
+        <h1>🌾 草原食物链实验室</h1>
+        <p>🔁 点击生物构建链 → 提交后自动同步</p>
     </div>
 
-    <script>
-        const app = cloudbase.init({ env: 'food-chain-lab-7gs8q6n82492ec18' });
-        const auth = app.auth();
-        const db = app.database();
-        const foodChainsCollection = db.collection('foodchains');
+    <!-- 只有草原 -->
+    <div class="habitat-tabs">
+        <div class="habitat-btn">🌿 草原</div>
+    </div>
 
-        function getDeviceId() {
-            let id = localStorage.getItem('deviceId');
-            if (!id) {
-                id = 'device_' + Math.random().toString(36).substr(2, 8);
-                localStorage.setItem('deviceId', id);
-            }
-            return id;
+    <div class="library-title">📦 生物素材库</div>
+    <div class="bio-grid" id="bio-grid"></div>
+
+    <div class="main-work-area">
+        <div class="build-area">
+            <div class="build-label">
+                🧪 我的食物链
+                <button id="clearBtn">🧹 清空</button>
+            </div>
+            <div class="foodchain-strip" id="foodchain-strip"></div>
+            <button class="submit-btn" id="submitBtn">📤 提交同步到云端</button>
+            <div class="result-feedback" id="resultMessage">✨ 构建食物链后点击提交</div>
+        </div>
+
+        <div class="history-panel">
+            <div class="history-title">
+                📋 我的提交记录
+                <span class="cloud-status" id="cloudIndicator">☁️ 待同步</span>
+            </div>
+            <ul class="history-list" id="historyList"></ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    const app = cloudbase.init({ env: 'food-chain-lab-7gs8q6n82492ec18' });
+    const auth = app.auth();
+    const db = app.database();
+    const foodChainsCollection = db.collection('foodchains');
+
+    // 草原生物列表
+    const grasslandSpecies = [
+        { name: "青草", role: "producer", emoji: "🌿" },
+        { name: "小树", role: "producer", emoji: "🌱" },
+        { name: "蝗虫", role: "consumer1", emoji: "🦗" },
+        { name: "田鼠", role: "consumer1", emoji: "🐭" },
+        { name: "兔子", role: "consumer1", emoji: "🐇" },
+        { name: "小鸟", role: "consumer2", emoji: "🐦" },
+        { name: "蛇", role: "consumer2", emoji: "🐍" },
+        { name: "羊", role: "consumer2", emoji: "🐑" },
+        { name: "狼", role: "consumer3", emoji: "🐺" },
+        { name: "老鹰", role: "consumer3", emoji: "🦅" }
+    ];
+
+    // 打乱数组顺序的函数
+    function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
         }
+        return arr;
+    }
 
-        function setCloudStatus(text, isError = false) {
-            const indicator = document.getElementById('cloudIndicator');
-            const statusDiv = document.getElementById('cloudStatus');
-            indicator.textContent = text;
-            if (isError) {
-                statusDiv.innerHTML = `⚠️ ${text}`;
-                statusDiv.style.background = '#8b3a3a';
-            } else {
-                statusDiv.innerHTML = `✅ ${text}`;
-                statusDiv.style.background = '#2c5e2c';
-            }
-            setTimeout(() => {
-                if (statusDiv.innerHTML === `✅ ${text}` || statusDiv.innerHTML === `⚠️ ${text}`) {
-                    statusDiv.innerHTML = '';
-                }
-            }, 3000);
-        }
+    let chainItems = [];
+    let historyRecords = [];
+    let nextId = 1;
 
-        // 直接同步到云端，不做任何验证
-        async function syncToCloud(chainStr, habitat) {
-            try {
-                const loginState = await auth.getLoginState();
-                if (!loginState) {
-                    await auth.signInAnonymously();
-                }
-                
-                await foodChainsCollection.add({
-                    chain: chainStr,
-                    deviceId: getDeviceId(),
-                    timestamp: Date.now(),
-                    habitat: habitat
-                });
-                
-                setCloudStatus('已同步到云端 ✓');
-                return true;
-            } catch (err) {
-                console.error('云端同步失败:', err);
-                setCloudStatus('同步失败，请检查网络', true);
-                return false;
-            }
-        }
+    const grid = document.getElementById('bio-grid');
+    const stripDiv = document.getElementById('foodchain-strip');
+    const resultMsg = document.getElementById('resultMessage');
+    const clearBtn = document.getElementById('clearBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const historyList = document.getElementById('historyList');
 
-        // ==================== 食物链实验室核心代码 ====================
-        const forestRaw = [
-            { name: "橡树", role: "producer", emoji: "🌳" }, { name: "野莓", role: "producer", emoji: "🍓" }, { name: "青草", role: "producer", emoji: "🌿" },
-            { name: "毛毛虫", role: "consumer1", emoji: "🐛" }, { name: "田鼠", role: "consumer1", emoji: "🐁" }, { name: "松鼠", role: "consumer1", emoji: "🐿️" },
-            { name: "野兔", role: "consumer1", emoji: "🐇" }, { name: "啄木鸟", role: "consumer2", emoji: "🐦" }, { name: "刺猬", role: "consumer2", emoji: "🦔" },
-            { name: "赤狐", role: "consumer2", emoji: "🦊" }, { name: "蛇", role: "consumer2", emoji: "🐍" }, { name: "灰狼", role: "consumer3", emoji: "🐺" },
-            { name: "猫头鹰", role: "consumer3", emoji: "🦉" }, { name: "棕熊", role: "consumer3", emoji: "🐻" }
-        ];
-        const grasslandRaw = [
-            { name: "狗尾草", role: "producer", emoji: "🌾" }, { name: "三叶草", role: "producer", emoji: "🌱" }, { name: "蒲公英", role: "producer", emoji: "🌼" },
-            { name: "蝗虫", role: "consumer1", emoji: "🦗" }, { name: "蚂蚁", role: "consumer1", emoji: "🐜" }, { name: "野兔", role: "consumer1", emoji: "🐇" },
-            { name: "仓鼠", role: "consumer1", emoji: "🐁" }, { name: "羚羊", role: "consumer1", emoji: "🦌" }, { name: "麻雀", role: "consumer1", emoji: "🐦" },
-            { name: "蜥蜴", role: "consumer2", emoji: "🦎" }, { name: "蛇", role: "consumer2", emoji: "🐍" }, { name: "獴", role: "consumer2", emoji: "🦡" },
-            { name: "狐狸", role: "consumer3", emoji: "🦊" }, { name: "老鹰", role: "consumer3", emoji: "🦅" }, { name: "郊狼", role: "consumer3", emoji: "🐺" },
-            { name: "狮子", role: "consumer3", emoji: "🦁" }
-        ];
-        const oceanRaw = [
-            { name: "海带", role: "producer", emoji: "🌿" }, { name: "浮游植物", role: "producer", emoji: "🪸" }, { name: "海草", role: "producer", emoji: "🌱" },
-            { name: "磷虾", role: "consumer1", emoji: "🦐" }, { name: "浮游动物", role: "consumer1", emoji: "🦠" }, { name: "小鱼", role: "consumer1", emoji: "🐟" },
-            { name: "贝类", role: "consumer1", emoji: "🐚" }, { name: "中型鱼", role: "consumer2", emoji: "🐠" }, { name: "鱿鱼", role: "consumer2", emoji: "🦑" },
-            { name: "海鸟", role: "consumer2", emoji: "🐧" }, { name: "海豹", role: "consumer3", emoji: "🦭" }, { name: "鲨鱼", role: "consumer3", emoji: "🦈" },
-            { name: "虎鲸", role: "consumer3", emoji: "🐋" }, { name: "金枪鱼", role: "consumer3", emoji: "🐟" }
-        ];
-
-        function shuffleArray(arr) { for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; }
-        const speciesDB = { forest: shuffleArray([...forestRaw]), grassland: shuffleArray([...grasslandRaw]), ocean: shuffleArray([...oceanRaw]) };
-
-        let currentHabitat = 'forest';
-        let chainItems = [];
-        let historyRecords = [];
-        let nextId = 1;
-
-        const grid = document.getElementById('bio-grid');
-        const habitatLabel = document.getElementById('current-habitat-label');
-        const habitatBtns = document.querySelectorAll('.habitat-btn');
-        const stripDiv = document.getElementById('foodchain-strip');
-        const resultMsg = document.getElementById('resultMessage');
-        const clearBtn = document.getElementById('clearBtn');
-        const submitBtn = document.getElementById('submitBtn');
-        const toggleRuleBtn = document.getElementById('toggleRuleBtn');
-        const ruleBox = document.getElementById('ruleBox');
-        const historyList = document.getElementById('historyList');
-
-        toggleRuleBtn.addEventListener('click', () => {
-            ruleBox.classList.toggle('show');
-            toggleRuleBtn.textContent = ruleBox.classList.contains('show') ? '📋 隐藏书写规范' : '📋 显示书写规范';
+    // 渲染生物库（生物打乱，箭头放最后）
+    function renderBioGrid() {
+        grid.innerHTML = '';
+        // 复制一份并打乱顺序
+        const shuffledSpecies = shuffleArray([...grasslandSpecies]);
+        shuffledSpecies.forEach(bio => {
+            const item = document.createElement('div');
+            item.className = 'bio-item';
+            item.setAttribute('data-role', bio.role);
+            item.innerHTML = `<span>${bio.emoji}</span>${bio.name}`;
+            item.addEventListener('click', () => {
+                chainItems.push({ name: bio.name, emoji: bio.emoji, role: bio.role });
+                renderStrip();
+            });
+            grid.appendChild(item);
         });
-
-        function renderStrip() {
-            stripDiv.innerHTML = '';
-            if (chainItems.length === 0) {
-                stripDiv.innerHTML = '<div style="color:#5d6b3e; font-size:1.3rem; padding:10px;">✨ 点击生物添加，再点箭头插入</div>';
-                return;
-            }
-            chainItems.forEach((item, idx) => {
-                if (typeof item === 'string') {
-                    const arrowSpan = document.createElement('span');
-                    arrowSpan.className = 'arrow-inline';
-                    arrowSpan.textContent = item;
-                    arrowSpan.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        chainItems.splice(idx, 1);
-                        renderStrip();
-                    });
-                    stripDiv.appendChild(arrowSpan);
-                } else {
-                    const bioDiv = document.createElement('div');
-                    bioDiv.className = 'placed-bio';
-                    bioDiv.dataset.role = item.role;
-                    bioDiv.innerHTML = `<span>${item.emoji}</span>${item.name}`;
-                    bioDiv.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        chainItems.splice(idx, 1);
-                        renderStrip();
-                    });
-                    stripDiv.appendChild(bioDiv);
-                }
-            });
-        }
-
-        function renderBioGrid(habitat) {
-            const species = speciesDB[habitat];
-            grid.innerHTML = '';
-            species.forEach(bio => {
-                const item = document.createElement('div');
-                item.className = 'bio-item';
-                item.setAttribute('data-role', bio.role);
-                item.innerHTML = `<span>${bio.emoji}</span>${bio.name}`;
-                item.addEventListener('click', () => { chainItems.push({ name: bio.name, emoji: bio.emoji, role: bio.role }); renderStrip(); });
-                grid.appendChild(item);
-            });
-            const arrowRight = document.createElement('div');
-            arrowRight.className = 'bio-item arrow-item';
-            arrowRight.innerHTML = `<span>→</span>右箭头`;
-            arrowRight.addEventListener('click', () => { chainItems.push('→'); renderStrip(); });
-            grid.appendChild(arrowRight);
-            const arrowLeft = document.createElement('div');
-            arrowLeft.className = 'bio-item arrow-item';
-            arrowLeft.innerHTML = `<span>←</span>左箭头`;
-            arrowLeft.addEventListener('click', () => { chainItems.push('←'); renderStrip(); });
-            grid.appendChild(arrowLeft);
-        }
-
-        function reshuffleHabitat(habitat) {
-            if (habitat === 'forest') speciesDB.forest = shuffleArray([...forestRaw]);
-            else if (habitat === 'grassland') speciesDB.grassland = shuffleArray([...grasslandRaw]);
-            else if (habitat === 'ocean') speciesDB.ocean = shuffleArray([...oceanRaw]);
-        }
-        function switchHabitat(habitat) {
-            currentHabitat = habitat;
-            habitatLabel.innerText = (habitat === 'forest' ? '森林' : habitat === 'grassland' ? '草原' : '海洋');
-            reshuffleHabitat(habitat);
-            renderBioGrid(habitat);
-        }
-        habitatBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                habitatBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                switchHabitat(btn.dataset.habitat);
-            });
-        });
-
-        clearBtn.addEventListener('click', () => { chainItems = []; renderStrip(); resultMsg.innerText = '✨ 构建食物链后点击提交'; });
+        // 箭头放在最后
+        const arrowRight = document.createElement('div');
+        arrowRight.className = 'bio-item arrow-item';
+        arrowRight.innerHTML = `<span>→</span>右箭头`;
+        arrowRight.addEventListener('click', () => { chainItems.push('→'); renderStrip(); });
+        grid.appendChild(arrowRight);
         
-        function chainToString() { return chainItems.map(i => typeof i === 'string' ? i : i.emoji + i.name).join(''); }
-        
-        function deleteRecord(id) { 
-            historyRecords = historyRecords.filter(r => r.id !== id); 
-            updateHistoryUI(); 
-        }
-        
-        function updateHistoryUI() {
-            historyList.innerHTML = '';
-            historyRecords.slice().reverse().forEach(record => {
-                const li = document.createElement('li');
-                const chainSpan = document.createElement('span');
-                chainSpan.className = 'history-chain';
-                chainSpan.textContent = record.chainStr;
-                const delBtn = document.createElement('button');
-                delBtn.className = 'delete-record';
-                delBtn.innerHTML = '✖';
-                delBtn.addEventListener('click', (e) => { e.stopPropagation(); deleteRecord(record.id); });
-                li.appendChild(chainSpan);
-                li.appendChild(delBtn);
-                historyList.appendChild(li);
-            });
-            if (historyRecords.length === 0) {
-                const emptyLi = document.createElement('li');
-                emptyLi.style.textAlign = 'center';
-                emptyLi.style.background = 'transparent';
-                emptyLi.style.boxShadow = 'none';
-                emptyLi.style.justifyContent = 'center';
-                emptyLi.innerHTML = '<span style="color:#7a6b45;">📭 暂无提交记录</span>';
-                historyList.appendChild(emptyLi);
-            }
-        }
-        
-        function addHistoryRecord(chainStr) {
-            historyRecords.push({ id: nextId++, chainStr: chainStr });
-            if (historyRecords.length > 40) historyRecords.shift();
-            updateHistoryUI();
-        }
+        const arrowLeft = document.createElement('div');
+        arrowLeft.className = 'bio-item arrow-item';
+        arrowLeft.innerHTML = `<span>←</span>左箭头`;
+        arrowLeft.addEventListener('click', () => { chainItems.push('←'); renderStrip(); });
+        grid.appendChild(arrowLeft);
+    }
 
-        // 提交逻辑：不做任何验证，直接同步
-        async function submitFoodChain() {
-            const finalChain = chainToString();
-            
-            if (!finalChain) {
-                resultMsg.innerText = '❓ 请先构建食物链再提交';
-                return;
-            }
-            
-            resultMsg.innerText = '📤 正在同步到云端...';
-            
-            // 同步到云端
-            const success = await syncToCloud(finalChain, currentHabitat);
-            
-            if (success) {
-                resultMsg.innerText = '✅ 已提交！老师可以看到你的食物链啦！';
-                addHistoryRecord(finalChain);
+    function renderStrip() {
+        stripDiv.innerHTML = '';
+        if (chainItems.length === 0) {
+            stripDiv.innerHTML = '<div style="color:#5d6b3e;">✨ 点击生物添加，再点箭头插入</div>';
+            return;
+        }
+        chainItems.forEach((item, idx) => {
+            if (typeof item === 'string') {
+                const arrowSpan = document.createElement('span');
+                arrowSpan.className = 'arrow-inline';
+                arrowSpan.textContent = item;
+                arrowSpan.onclick = () => { chainItems.splice(idx, 1); renderStrip(); };
+                stripDiv.appendChild(arrowSpan);
             } else {
-                resultMsg.innerText = '❌ 提交失败，请检查网络后重试';
+                const bioDiv = document.createElement('div');
+                bioDiv.className = 'placed-bio';
+                bioDiv.innerHTML = `<span>${item.emoji}</span>${item.name}`;
+                bioDiv.onclick = () => { chainItems.splice(idx, 1); renderStrip(); };
+                stripDiv.appendChild(bioDiv);
             }
+        });
+    }
+
+    function chainToString() { return chainItems.map(i => typeof i === 'string' ? i : i.emoji + i.name).join(''); }
+
+    function updateHistoryUI() {
+        historyList.innerHTML = '';
+        [...historyRecords].reverse().forEach(record => {
+            const li = document.createElement('li');
+            li.innerHTML = `<span>${record.chainStr}</span>
+                <button class="delete-record" data-id="${record.id}">✖</button>`;
+            li.querySelector('.delete-record').onclick = () => {
+                historyRecords = historyRecords.filter(r => r.id !== record.id);
+                updateHistoryUI();
+            };
+            historyList.appendChild(li);
+        });
+        if (historyRecords.length === 0) {
+            historyList.innerHTML = '<li style="justify-content:center;">📭 暂无提交记录</li>';
         }
-        
-        submitBtn.addEventListener('click', submitFoodChain);
-        
-        async function initCloud() {
-            try {
-                const loginState = await auth.getLoginState();
-                if (!loginState) {
-                    await auth.signInAnonymously();
-                }
-                setCloudStatus('云端已连接 ✓');
-            } catch (err) {
-                console.error('云开发初始化失败:', err);
-                setCloudStatus('云端连接失败', true);
-            }
-        }
-        initCloud();
-        
-        renderStrip();
-        switchHabitat('forest');
+    }
+
+    function addHistoryRecord(chainStr) {
+        historyRecords.push({ id: nextId++, chainStr: chainStr.slice(0, 50) });
+        if (historyRecords.length > 30) historyRecords.shift();
         updateHistoryUI();
-    </script>
+    }
+
+    // 设备ID
+    function getDeviceId() {
+        let id = localStorage.getItem('deviceId');
+        if (!id) {
+            id = 'device_' + Math.random().toString(36).substr(2, 8);
+            localStorage.setItem('deviceId', id);
+        }
+        return id;
+    }
+
+    function setCloudStatus(text, isError = false) {
+        const indicator = document.getElementById('cloudIndicator');
+        indicator.textContent = text;
+        indicator.style.background = isError ? '#8b3a3a' : '#4f7a3f';
+        setTimeout(() => indicator.textContent = '☁️ 待同步', 2000);
+    }
+
+    async function submitFoodChain() {
+        const finalChain = chainToString();
+        if (!finalChain) {
+            resultMsg.innerText = '❓ 请先构建食物链再提交';
+            return;
+        }
+        resultMsg.innerText = '📤 正在同步...';
+        try {
+            const loginState = await auth.getLoginState();
+            if (!loginState) await auth.signInAnonymously();
+            await foodChainsCollection.add({
+                chain: finalChain,
+                deviceId: getDeviceId(),
+                timestamp: Date.now(),
+                habitat: 'grassland'
+            });
+            resultMsg.innerText = '✅ 已提交！';
+            addHistoryRecord(finalChain);
+            setCloudStatus('已同步 ✓');
+        } catch (err) {
+            resultMsg.innerText = '❌ 提交失败';
+            setCloudStatus('同步失败', true);
+        }
+    }
+
+    clearBtn.onclick = () => { chainItems = []; renderStrip(); resultMsg.innerText = '✨ 构建食物链后点击提交'; };
+    submitBtn.onclick = submitFoodChain;
+
+    renderBioGrid();
+    renderStrip();
+    updateHistoryUI();
+    auth.signInAnonymously().catch(console.error);
+</script>
 </body>
 </html>
