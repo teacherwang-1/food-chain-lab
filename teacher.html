@@ -19,8 +19,8 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;  /* 禁止横向滚动条 */
         }
-        /* 顶部：标题 + 导出按钮 + 小统计卡片 */
         .top-bar {
             display: flex;
             align-items: center;
@@ -83,7 +83,6 @@
             font-size: 0.85rem;
         }
 
-        /* 主内容区：排行榜占满剩余空间，一页显示不滚动 */
         .main-content {
             flex: 1;
             display: flex;
@@ -114,14 +113,35 @@
         }
         .table-container {
             flex: 1;
-            overflow-y: auto;
+            overflow-y: auto;    /* 仅允许纵向滚动 */
+            overflow-x: hidden;  /* 禁止横向滚动 */
             min-height: 0;
         }
         table {
             width: 100%;
             border-collapse: collapse;
             font-size: 1rem;
+            /* 使用自动布局，列宽由内容决定，但通过样式控制 */
         }
+        /* 列宽分配：排名窄一些，操作列固定宽度，食物链列占剩余空间 */
+        th:nth-child(1), td:nth-child(1) {
+            width: 80px;          /* 排名列固定宽度 */
+            text-align: center;
+        }
+        th:nth-child(2), td:nth-child(2) {
+            /* 食物链列：自动占满剩余宽度，并允许换行 */
+            word-break: break-word;
+            white-space: normal;
+        }
+        th:nth-child(3), td:nth-child(3) {
+            width: 100px;         /* 次数列固定宽度 */
+            text-align: center;
+        }
+        th:nth-child(4), td:nth-child(4) {
+            width: 85px;          /* 操作列固定宽度，确保按钮始终可见 */
+            text-align: center;
+        }
+
         th, td {
             padding: 12px 10px;
             text-align: left;
@@ -148,6 +168,7 @@
             border-radius: 20px;
             cursor: pointer;
             font-size: 0.75rem;
+            white-space: nowrap;   /* 按钮文字不换行 */
         }
         .empty-state {
             text-align: center;
@@ -160,10 +181,15 @@
             margin-top: 8px;
             text-align: right;
         }
+        /* 小屏幕调整 */
         @media (max-width: 700px) {
             .top-bar { flex-direction: column; align-items: stretch; }
             .stats-mini { justify-content: center; }
-            th, td { padding: 8px 5px; font-size: 0.85rem; }
+            table { font-size: 0.85rem; }
+            th, td { padding: 8px 5px; }
+            th:nth-child(1), td:nth-child(1) { width: 60px; }
+            th:nth-child(3), td:nth-child(3) { width: 80px; }
+            th:nth-child(4), td:nth-child(4) { width: 70px; }
         }
     </style>
 </head>
@@ -197,12 +223,12 @@
         <div class="table-container">
             <table id="grassland-table">
                 <thead>
-                    <tr><th>排名</th><th>食物链</th><th>提交次数</th><th>操作</th></tr>
+                    <tr><th>排名</th><th>食物链</th><th>提交次数</th><th>操作</th> </>
                 </thead>
                 <tbody id="grassland-body">
-                    <tr><td colspan="4" class="empty-state">加载中...</td></tr>
+                    <tr><td colspan="4" class="empty-state">加载中...</td> </>
                 </tbody>
-            </table>
+              </table>
         </div>
         <div class="auto-refresh" id="refreshTimer">🔄 实时更新</div>
     </div>
@@ -228,10 +254,8 @@
         try {
             const res = await collection.get();
             let data = res.data || [];
-            // 只保留草原
             data = data.filter(r => r.habitat === 'grassland');
 
-            // 去重统计：相同食物链字符串只计为一条，但统计提交次数
             const statsMap = new Map();
             const deviceSet = new Set();
             data.forEach(record => {
